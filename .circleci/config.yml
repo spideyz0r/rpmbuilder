@@ -17,10 +17,13 @@ jobs:
       - checkout
       - run:
           name: "Starting docker..."
-          command: "docker run -it -d --name fedora-rawhide-testing --cap-add=SYS_ADMIN fedora:rawhide"
+          command: "docker run -it -d --name fedora-testing --cap-add=SYS_ADMIN fedora:rawhide"
       - run:
           name: "Listing..."
           command: "docker ps -a"
+      - run:
+          name: "Preparing docker..."
+          command: "docker exec -ti fedora-testing 'dnf -y install dnf-data dnf-plugins-core dnf-utils libdnf dnfdragora vim mock rpm-build rpmdevtools'"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
