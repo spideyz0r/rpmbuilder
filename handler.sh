@@ -11,7 +11,7 @@ function build()
 	echo "###################################################"
 	echo "### Building $pkg => $name. Logs in $name.log"
 	echo "###################################################"
-	docker run -it -d --name ${pkg}-build -v /home/circleci/project:/project --cap-add=SYS_ADMIN --security-opt apparmor:unconfined mockzor
+	docker run -it -d --name ${pkg}-build -v /home/circleci/project:/project --cap-add=SYS_ADMIN --security-opt apparmor:unconfined spideyz0r/mockzor
 	echo "### Building SRPM for $pkg"
 	docker exec ${pkg}-build /project/scripts/buildsrpm.sh $pkg
 	echo "### Running mock for $name"
