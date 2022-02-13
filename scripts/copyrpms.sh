@@ -1,3 +1,3 @@
 #!/bin/bash
-mkdir /project/output
-cp -v /var/lib/mock/rocky+epel-8-x86_64/result/* /project/output
+mkdir -p /project/files/$2
+cp -v /var/lib/mock/$1/result/* /project/files/$2

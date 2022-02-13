@@ -19,22 +19,10 @@ jobs:
           name: "Building image with docker-compose"
           command: "docker build -t mockzor ."
       - run:
-          name: "Starting privileged mock container"
-          command: "docker run -it -d --name mock -v /home/circleci/project:/project --cap-add=SYS_ADMIN --security-opt apparmor:unconfined mockzor"
-      - run:
-          name: "Listing running containers"
-          command: "docker ps -a"
-      - run:
-          name: "Generating SRPM with rpmbuilder"
-          command: "docker exec -ti mock /project/scripts/buildsrpm.sh puppet.spec"
-      - run:
-          name: "Running mock againt rocky+epel 8"
-          command: "docker exec -ti mock /project/scripts/runmock.sh rocky+epel-8-x86_64 puppet-6.19.0-1.fc34.src.rpm"
-      - run:
-          name: "Copying over RPMs"
-          command: "docker exec -ti mock /project/scripts/copyrpms.sh"
+          name: "Building all PR scoped packages"
+          command: "bash handler.sh"
       - store_artifacts:
-          path: /project/output/*
+          path: /project/files/
 workflows:
   rpmbuilder-workflow:
     jobs:
