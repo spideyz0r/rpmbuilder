@@ -2,14 +2,14 @@
 %global puppet_libdir %{ruby_vendorlibdir}
 
 Name:           puppet
-Version:        6.19.0
+Version:        6.26.0
 Release:        1%{?dist}
 Summary:        Network tool for managing many disparate systems
 License:        ASL 2.0
 URL:            https://puppetlabs.com
 Source0:        https://downloads.puppetlabs.com/puppet/%{name}-%{version}.tar.gz
 Source1:        https://downloads.puppetlabs.com/puppet/%{name}-%{version}.tar.gz.asc
-Source2:        gpgkey-6F6B15509CF8E59E6E469F327F438280EF8D349F.gpg
+Source2:        RPM-GPG-KEY-puppet-20250406
 Source3:        https://forge.puppet.com/v3/files/puppetlabs-mount_core-1.0.4.tar.gz
 Source4:        https://forge.puppet.com/v3/files/puppetlabs-host_core-1.0.3.tar.gz
 Source5:        https://forge.puppet.com/v3/files/puppetlabs-augeas_core-1.1.1.tar.gz
@@ -22,6 +22,7 @@ Source11:       https://forge.puppet.com/v3/files/puppetlabs-zfs_core-1.1.0.tar.
 Source12:       https://forge.puppet.com/v3/files/puppetlabs-zone_core-1.0.3.tar.gz
 Source13:       puppet-nm-dispatcher.systemd
 Source14:       start-puppet-wrapper
+Source15:       logrotate
 
 BuildArch: noarch
 
@@ -89,7 +90,7 @@ for d in $(find -mindepth 1 -maxdepth 1 -type d -name 'puppetlabs-*'); do
   cp -a $d %{buildroot}%{_datadir}/puppetlabs/puppet/vendor_modules/$mod
 done
 
-install -Dp -m0644 ext/redhat/logrotate %{buildroot}%{_sysconfdir}/logrotate.d/puppet
+install -Dp -m0644 %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/puppet
 
 %{__install} -d -m0755 %{buildroot}%{_unitdir}
 install -Dp -m0644 ext/systemd/puppet.service %{buildroot}%{_unitdir}/puppet.service
@@ -101,7 +102,6 @@ install -Dpv -m0755 %{SOURCE13} \
 # Install the ext/ directory to %%{_datadir}/puppetlabs/%%{name}
 install -d %{buildroot}%{_datadir}/puppetlabs/%{name}
 cp -a ext/ %{buildroot}%{_datadir}/puppetlabs/%{name}
-chmod 0755 %{buildroot}%{_datadir}/puppetlabs/%{name}/ext/regexp_nodes/regexp_nodes.rb
 
 # Install wrappers for SELinux
 install -Dp -m0755 %{SOURCE14} %{buildroot}%{_bindir}/start-puppet-agent
@@ -118,7 +118,7 @@ echo "D %{_rundir}/%{name} 0755 %{name} %{name} -" > \
 # These mess-up with RPM automatic dependencies compute by adding
 # unnecessary deps like /sbin/runscripts
 # some other things were removed with the patch
-rm -r %{buildroot}%{_datadir}/puppetlabs/puppet/ext/{debian,freebsd,gentoo,ips,osx,solaris,suse,windows}
+rm -r %{buildroot}%{_datadir}/puppetlabs/puppet/ext/{debian,solaris,suse,windows}
 rm %{buildroot}%{_datadir}/puppetlabs/puppet/ext/redhat/*.init
 rm %{buildroot}%{_datadir}/puppetlabs/puppet/ext/{build_defaults.yaml,project_data.yaml}
 
@@ -195,6 +195,12 @@ useradd -r -u 52 -g puppet -d /usr/local/puppetlabs -s /sbin/nologin \
 
 
 %changelog
+* Wed Jan 26 2022 Breno Brand Fernandes <brandfbb@gmail.com> - 6.26.0-1
+- Update to 6.26.0
+
+* Thu Nov 18 2021 Breno Brand Fernandes <brandfbb@gmail.com> - 6.25.1-1
+- Update to 6.25.1
+
 * Thu Oct 22 2020 Igor Raits <ignatenkobrain@fedoraproject.org> - 6.19.0-1
 - Update to 6.19.0
 
