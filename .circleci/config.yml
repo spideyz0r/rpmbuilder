@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: "Building all PR scoped packages"
-          command: "bash handler.sh"
+          command: "scripts/handler.sh"
       - store_artifacts:
           path: /project/files/
 workflows:
