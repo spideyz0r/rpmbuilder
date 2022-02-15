@@ -40,4 +40,3 @@ do
 done
 # wait
 echo "All RPMs were built with success!"
-ls -R project/files
