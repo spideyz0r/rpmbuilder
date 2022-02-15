@@ -1,2 +1,2 @@
-epel8
-f34
+epel8:rocky+epel-8-x86_64
+f34:fedora-34-x86_64

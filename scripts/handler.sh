@@ -1,23 +1,12 @@
 #!/bin/bash
 set -e
 
-function branchEnv()
-{
-	if [[ $1 == "epel8" ]]
-	then
-		RET="rocky+epel-8-x86_64"
-	else
-		[[ $1 =~ ^f[0-9]+$ ]] && RET="fedora-$(echo $1 | tr -d [a-z])-x86_64"
-	fi
-	echo $RET
-}
-
 function build()
 {
 	pkg=$1
-	branch=$2
+	branch=$(echo $2 | tr -d ":" -f1)
+	mock_env=$(echo $2 | tr -d ":" -f2)
 	repo=$(cat packages/$pkg/repo | tr -d " " | tr -d "\n")
-	mock_env=$(branchEnv $branch)
 	[[ ! -d packages/$pkg/$pkg ]] && git clone --recursive $repo packages/$pkg/$pkg &>>${LOGS_DIR}/${pkg}.log
 	git --git-dir=packages/$pkg/$pkg/.git --work-tree=packages/$pkg/$pkg reset --hard origin/$branch &>>${LOGS_DIR}/${pkg}.log
 	release=$(grep 'Release:' packages/$pkg/$pkg/$pkg.spec | cut -d ":" -f2  | tr -d " " | cut -b -1)
