@@ -33,9 +33,9 @@ packages=$(git diff main... --diff-filter=MACR --name-only | grep "packages/" | 
 
 for pkg in $packages
 do
-	for distro in $(cat packages/${pkg}/branches)
+	for env in $(cat packages/${pkg}/env)
 	do
-		build $pkg $distro
+		build $pkg $env
 	done
 done
 # wait
