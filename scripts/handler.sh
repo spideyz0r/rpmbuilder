@@ -7,8 +7,8 @@ function build()
 	branch=$(echo $2 | tr -d ":" -f1)
 	mock_env=$(echo $2 | tr -d ":" -f2)
 	repo=$(cat packages/$pkg/repo | tr -d " " | tr -d "\n")
-	[[ ! -d packages/$pkg/$pkg ]] && git clone --recursive $repo packages/$pkg/$pkg &>>${LOGS_DIR}/${pkg}.log
-	git --git-dir=packages/$pkg/$pkg/.git --work-tree=packages/$pkg/$pkg reset --hard origin/$branch &>>${LOGS_DIR}/${pkg}.log
+	[[ -e packages/$pkg/repo ]] && [[ ! -d packages/$pkg/$pkg ]] && git clone --recursive $repo packages/$pkg/$pkg &>>${LOGS_DIR}/${pkg}.log
+	[[ -e packages/$pkg/repo ]] && [[ ! -d packages/$pkg/$pkg ]] && git --git-dir=packages/$pkg/$pkg/.git --work-tree=packages/$pkg/$pkg reset --hard origin/$branch &>>${LOGS_DIR}/${pkg}.log
 	release=$(grep 'Release:' packages/$pkg/$pkg/$pkg.spec | cut -d ":" -f2  | tr -d " " | cut -b -1)
 	version=$(grep 'Version:' packages/$pkg/$pkg/$pkg.spec | cut -d ":" -f2  | tr -d " ")
 	name="${pkg}-${version}-${release}.fc34.src.rpm"
