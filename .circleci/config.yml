@@ -11,7 +11,7 @@ jobs:
           name: "Building all PR scoped packages"
           command: "scripts/handler.sh"
       - store_artifacts:
-          path: /project/files/
+          path: files/
 workflows:
   rpmbuilder-workflow:
     jobs:

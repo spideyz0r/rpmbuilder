@@ -6,9 +6,12 @@ function build()
 	pkg=$1
 	branch=$(echo $2 | cut -d ":" -f1)
 	mock_env=$(echo $2 | cut -d ":" -f2)
-	[[ -e packages/$pkg/repo ]] && repo=$(cat packages/$pkg/repo | tr -d " " | tr -d "\n")
-	[[ -e packages/$pkg/repo ]] && [[ ! -d packages/$pkg/$pkg ]] && git clone --recursive $repo packages/$pkg/$pkg &>>${LOGS_DIR}/${pkg}.log
-	[[ -e packages/$pkg/repo ]] && git --git-dir=packages/$pkg/$pkg/.git --work-tree=packages/$pkg/$pkg reset --hard origin/$branch &>>${LOGS_DIR}/${pkg}.log
+	if [[ -e packages/$pkg/repo ]]
+	then
+		repo=$(cat packages/$pkg/repo | tr -d " " | tr -d "\n")
+		[[ ! -d packages/$pkg/$pkg ]] && git clone --recursive $repo packages/$pkg/$pkg &>>${LOGS_DIR}/${pkg}.log
+		git --git-dir=packages/$pkg/$pkg/.git --work-tree=packages/$pkg/$pkg reset --hard origin/$branch &>>${LOGS_DIR}/${pkg}.log
+	fi
 	release=$(grep 'Release:' packages/$pkg/$pkg/$pkg.spec | cut -d ":" -f2  | tr -d " " | cut -b -1)
 	version=$(grep 'Version:' packages/$pkg/$pkg/$pkg.spec | cut -d ":" -f2  | tr -d " ")
 	name="${pkg}-${version}-${release}.fc34.src.rpm"
