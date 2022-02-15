@@ -17,7 +17,6 @@ function build()
 	echo "### Mockenv: $mock_env"
 	echo "### Branch: $branch"
 	echo "### Logs in $name.log"
-	echo "#########################################################################"
 	docker run -it -d --name ${pkg}-${branch}-build -v /home/circleci/project:/project --cap-add=SYS_ADMIN --security-opt apparmor:unconfined spideyz0r/mockzor &>>${LOGS_DIR}/${pkg}.log
 	echo "### Building SRPM for $pkg"
 	docker exec ${pkg}-${branch}-build /project/scripts/buildsrpm.sh $pkg &>>${LOGS_DIR}/${pkg}.log
@@ -41,4 +40,4 @@ do
 done
 # wait
 echo "All RPMs were built with success!"
-ls -R /project/files
+ls -R project/files
