@@ -5,6 +5,7 @@
 This is an automated RPM package builder repository.
 
 You can build RPM packages for Fedora, Centos, RockyLinux and RedHat.
+
 It builds your package and test it in an isolated environment.
 
 This repository uses, docker containers, mock, rpmbuild, dockerhub, and circleci.
@@ -21,6 +22,8 @@ E --> F{RPM Packages}
 To build a package, place your spec files or a repository under the *packages/* directory. Just follow the examples available in the repository.
 
 A PR will build your package and let it available for download. Having a PR merged will deploy that package to these repositories [1].
+
+Only the spec files scoped to your PR will be built. So if your forked repository has multiple packages, the pipeline will only build the PR-scoped packages.
 
 If you build a Rocky Linux 8 package (el8), the repository will spin up an el8 environment, build and install the package. 
 
