@@ -27,9 +27,10 @@ function build()
 	docker exec ${pkg}-${branch}-build /project/scripts/runmock.sh $mock_env $name &>>${LOGS_DIR}/${pkg}.log
 	echo "### Copying $pkg RPMs"
 	docker exec ${pkg}-${branch}-build /project/scripts/copyrpms.sh $mock_env $name &>>${LOGS_DIR}/${pkg}.log
+	echo "### Copyng logs to artifactory..."
 }
 
-LOGS_DIR=logs
+LOGS_DIR=/home/circleci/project/files
 mkdir -p $LOGS_DIR
 # list only files Modified, Added, Copied, Renamed
 packages=$(git diff main... --diff-filter=MACR --name-only | grep "packages/" | cut -d "/" -f2 | sort | uniq)
