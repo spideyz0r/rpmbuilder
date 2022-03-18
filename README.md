@@ -41,4 +41,4 @@ The docker image used by this repository can be found, forked or cloned from her
 2 https://github.com/spideyz0r/rpmbuilder-base-image.
 
 ## todo 
-- add the deploy step and push the built package to the according repository
+- add the deploy step and push the built package to the configured repository
